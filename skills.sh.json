@@ -1,0 +1,26 @@
+{
+  "$schema": "https://skills.sh/schemas/skills.sh.schema.json",
+  "notGrouped": "bottom",
+  "groupings": [
+    {
+      "title": "Performance",
+      "description": "Find why a game stutters or lags, fix the cause, and prove it with the same measurement.",
+      "skills": ["game-performance", "threejs-performance", "godot-performance", "unity-performance", "unreal-performance", "phaser-performance"]
+    },
+    {
+      "title": "Crashes, reviews and stores",
+      "description": "Errors from players, Steam reviews by build, Android vitals and Apple's hang rate, and Steam Deck testing.",
+      "skills": ["game-crash-triage", "steam-review-triage", "mobile-store-vitals", "steam-deck-testing"]
+    },
+    {
+      "title": "Analytics",
+      "description": "Turn the developer's questions into events, funnels and a dashboard.",
+      "skills": ["game-analytics", "glitchless-dashboard"]
+    },
+    {
+      "title": "Glitchless",
+      "description": "Add Glitchless to a game and let your agent fix what real players hit.",
+      "skills": ["glitchless-setup", "glitchless-triage"]
+    }
+  ]
+}
