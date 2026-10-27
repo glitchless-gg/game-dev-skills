@@ -13,11 +13,13 @@ is the Godot part.
 **In the editor:** run the game, open the Debugger panel.
 
 - **Profiler**: script time per function. Start it, play the slow part, stop it, sort by self time.
-- **Visual Profiler**: CPU and GPU time per rendering step (only on Forward+ and Mobile; the Compatibility
-  renderer doesn't time the GPU).
+- **Visual Profiler**: CPU and GPU time for each rendering step (rendering only, not scripts or physics).
+- **Pipeline Compilations** (Godot 4.4+, in Monitors): shaders compiled while running. Draw going up during a
+  hitch means the hitch is shader compilation.
 - **Monitors**: FPS, process and physics time, draw calls, objects, nodes and **orphan nodes**.
 
-**In an exported build**, which is what players run, read the same monitors yourself:
+**In an exported build**, which is what players run, read the same monitors yourself (orphan nodes are only
+counted in debug builds):
 
 ```gdscript
 func _ready() -> void:
@@ -51,10 +53,12 @@ FPS averages hide hitches. Record each frame's delta in `_process` and report p5
 
 ## Fixes
 
-**Shader and pipeline compiles.** Draw every material, mesh and particle effect a level uses once behind the
-loading screen (off-camera works) so it compiles before play, and don't create new material variants mid-level.
-On Forward+ and Mobile, Godot 4.4+ ubershaders cover most of the rest. In Godot 4.5+, turn on the **Shader
-Baker** in the export preset so the first frame doesn't wait on compiles.
+**Shader and pipeline compiles.** On Forward+ and Mobile, Godot 4.4+ ubershaders and pipeline precompilation
+remove most of these. On the Compatibility renderer, and for anything still compiling, draw every material, mesh
+and particle effect a level uses once while the loading screen covers the view: in front of the camera, because
+objects outside it aren't drawn and don't compile. Don't create new material variants or change MSAA or shadow
+quality mid-level. Godot 4.5's **Shader Baker** (export preset, Forward+ and Mobile, not web) makes the first
+launch faster but doesn't stop hitches during play.
 
 **Node bursts.** Pool and reuse nodes instead of calling `instantiate()` and `add_child()` in a burst. Draw many
 copies with one `MultiMeshInstance2D`/`MultiMeshInstance3D` or a `GPUParticles2D`/`3D` node instead of a node each.

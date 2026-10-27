@@ -54,9 +54,10 @@ var pool = new ObjectPool<GameObject>(
 
 Draw many copies with one particle system or GPU instancing instead of an object each.
 
-**Shader variants.** Warm them behind the loading screen with a `ShaderVariantCollection` (`WarmUp()`), and strip
-variants you don't use. On Vulkan, Metal and DirectX 12, Unity 6.1+ can also record the pipeline states a run
-uses with `GraphicsStateCollection` and warm them up at load.
+**Shader variants.** On DirectX 11 and OpenGL, warm them behind the loading screen with a
+`ShaderVariantCollection` (`WarmUp()`), and strip variants you don't use. On DirectX 12, Vulkan and Metal the
+driver can still stall on a new vertex layout or render target: Unity 6's `GraphicsStateCollection` (experimental)
+records the pipeline states a run uses (`BeginTrace()`/`EndTrace()`) and warms them up at load.
 
 **Scene loads.** `SceneManager.LoadSceneAsync()` with `allowSceneActivation` for a loading screen, or Addressables.
 Keep `Awake()`/`Start()` of the new scene light. `Resources.Load` of a large asset blocks the main thread.
